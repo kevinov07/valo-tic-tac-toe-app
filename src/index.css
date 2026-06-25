@@ -1,0 +1,196 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* VALO TIC TAC TOE theme v1 */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: 'Chakra Petch', sans-serif;
+  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-correct: var(--correct);
+  --color-wrong: var(--wrong);
+  --color-type-team: var(--type-team);
+  --color-type-country: var(--type-country);
+  --color-type-role: var(--type-role);
+  --color-type-captain: var(--type-captain);
+  --color-type-agent: var(--type-agent);
+  --color-type-title: var(--type-title);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  color-scheme: dark;
+  --background: #0f141a;
+  --foreground: #e9eef3;
+  --card: #19212b;
+  --card-foreground: #e9eef3;
+  --popover: #19212b;
+  --popover-foreground: #e9eef3;
+  --primary: #2de1c2;
+  --primary-foreground: #052723;
+  --secondary: #232e3a;
+  --secondary-foreground: #e9eef3;
+  --muted: #1c2530;
+  --muted-foreground: #8a9aab;
+  --accent: #f0a93b;
+  --accent-foreground: #1a1206;
+  --destructive: #ff4d5e;
+  --border: #2a3744;
+  --input: #2a3744;
+  --ring: #2de1c2;
+
+  --correct: #2de1c2;
+  --wrong: #ff4d5e;
+  --type-team: #2de1c2;
+  --type-country: #f0a93b;
+  --type-role: #7aa2ff;
+  --type-captain: #e879f9;
+  --type-agent: #a78bfa;
+  --type-title: #fb923c;
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .tactical-grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(138, 154, 171, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(138, 154, 171, 0.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .text-stroke-hud {
+    letter-spacing: 0.12em;
+  }
+}
+
+@keyframes hud-scan {
+  0% {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(220%);
+    opacity: 0;
+  }
+}
+.animate-hud-scan {
+  animation: hud-scan 0.55s cubic-bezier(0.4, 0, 0.2, 1) 1;
+}
+
+@keyframes stamp-in {
+  0% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.96);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-stamp-in {
+  animation: stamp-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
+}
+
+@keyframes glitch-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px);
+  }
+  40% {
+    transform: translateX(3px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+.animate-glitch-shake {
+  animation: glitch-shake 0.32s linear 1;
+}
+
+@keyframes sheet-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.animate-sheet-up {
+  animation: sheet-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) 1;
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(45, 225, 194, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(45, 225, 194, 0);
+  }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 1.6s ease-in-out infinite;
+}
+
+@keyframes spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.animate-spin-reverse {
+  animation: spin-reverse 1s linear infinite;
+}
