@@ -5,9 +5,8 @@ const API_BASE = getApiBase()
 function getApiBase(): string {
   const envUrl = import.meta.env.VITE_API_URL
   if (envUrl) return envUrl
-  // Bun dev server (bun --hot) expone import.meta.hot; fallback al backend local
-  if (import.meta.hot) return 'http://localhost:8080'
-  return ''
+  if (import.meta.hot || import.meta.env.DEV) return 'http://localhost:8080'
+  return 'https://valo-ttt-backend.azurewebsites.net'
 }
 
 class ApiError extends Error {
