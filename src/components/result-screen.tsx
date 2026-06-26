@@ -48,7 +48,7 @@ export function ResultScreen({
         </span>
       </div>
 
-      <div className="mx-auto grid w-full max-w-[240px] grid-cols-3 gap-1.5">
+      <div className="mx-auto grid w-full max-w-[320px] grid-cols-3 gap-1.5">
         {board.cells.map((cell, i) => {
           const isWinCell = won && winLine?.includes(i)
           return (
@@ -124,7 +124,7 @@ export function ResultScreen({
         type="button"
         onClick={onPlayAgain}
         disabled={loading}
-        className="mt-8 flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[color:var(--correct)] font-display text-lg font-700 tracking-[0.1em] text-[color:var(--primary-foreground)] transition-transform active:scale-[0.98] disabled:opacity-60"
+        className="mt-8 flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[color:var(--correct)] font-display text-sm font-700 tracking-[0.1em] text-[color:var(--primary-foreground)] transition-transform active:scale-[0.98] disabled:opacity-60"
       >
         <RotateCcw className="size-5" strokeWidth={2.5} />
         {loading ? 'CARGANDO…' : 'JUGAR DE NUEVO'}
