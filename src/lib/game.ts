@@ -27,6 +27,7 @@ export interface BoardCell {
   playerAlias?: string
   teamName?: string
   avatarUrl?: string
+  ownerPlayer?: number // -1 o undefined = sin dueño, 0 = jugador 1, 1 = jugador 2
 }
 
 export interface Board {

@@ -5,8 +5,8 @@ const API_BASE = getApiBase()
 function getApiBase(): string {
   const envUrl = import.meta.env.VITE_API_URL
   if (envUrl) return envUrl
-  if (import.meta.hot || import.meta.env.DEV) return 'http://localhost:8080'
-  return 'https://valo-ttt-backend.azurewebsites.net'
+  if (import.meta.env.DEV) return 'http://localhost:8080'
+  throw new Error('VITE_API_URL no está definida. Defínela en .env para producción.')
 }
 
 class ApiError extends Error {
@@ -161,6 +161,13 @@ export async function searchPlayers(
 
   const params = new URLSearchParams({ q })
   return request<PlayerSummary[]>(`/api/players?${params}`, { signal })
+}
+
+export function getWsBase(): string {
+  const envUrl = import.meta.env.VITE_API_URL
+  if (envUrl) return envUrl.replace(/^http/, 'ws').replace(/\/+$/, '') + '/ws'
+  if (import.meta.env.DEV) return 'ws://localhost:8080/ws'
+  throw new Error('VITE_API_URL no está definida. Defínela en .env para producción.')
 }
 
 export { ApiError }

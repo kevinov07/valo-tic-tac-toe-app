@@ -11,8 +11,9 @@ import { HomeScreen } from '@/components/home-screen'
 import { BoardScreen } from '@/components/board-screen'
 import { ResultScreen } from '@/components/result-screen'
 import { PlayerSearch } from '@/components/player-search'
+import { MultiplayerGrid } from '@/components/multiplayer-grid'
 
-type Screen = 'home' | 'board' | 'result'
+type Screen = 'home' | 'board' | 'result' | 'multiplayer'
 
 export function ValorantGrid() {
   const [screen, setScreen] = useState<Screen>('home')
@@ -114,11 +115,18 @@ export function ValorantGrid() {
     [board, activeCell, guessesLeft, guessing, finishIfNeeded],
   )
 
-  return (
+  return screen === 'multiplayer' ? (
+    <MultiplayerGrid onBack={() => setScreen('home')} />
+  ) : (
     <main className="flex min-h-[100dvh] justify-center bg-background sm:items-center sm:py-6">
       <div className="relative flex min-h-[100dvh] w-full max-w-4xl flex-col bg-background">
         {screen === 'home' && (
-          <HomeScreen onPlay={startGame} loading={loading} error={error} />
+          <HomeScreen
+            onPlay={startGame}
+            onMultiplayer={() => setScreen('multiplayer')}
+            loading={loading}
+            error={error}
+          />
         )}
 
         {screen === 'board' && board && (

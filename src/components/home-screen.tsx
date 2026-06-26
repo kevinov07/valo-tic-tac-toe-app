@@ -1,11 +1,13 @@
-import { Shield, Globe, Crosshair, Crown, Users, Play } from 'lucide-react'
+import { Shield, Globe, Crosshair, Crown, Users, Play, Gamepad2 } from 'lucide-react'
 
 export function HomeScreen({
   onPlay,
+  onMultiplayer,
   loading,
   error,
 }: {
   onPlay: () => void
+  onMultiplayer?: () => void
   loading?: boolean
   error?: string | null
 }) {
@@ -67,6 +69,24 @@ export function HomeScreen({
       <p className="mt-3 text-center font-display text-[10px] tracking-[0.2em] text-muted-foreground">
         GENERA UN TABLERO ALEATORIO
       </p>
+
+      <div className="relative my-4 flex items-center gap-3">
+        <span className="h-px flex-1 bg-border" />
+        <span className="font-display text-[10px] tracking-[0.2em] text-muted-foreground">
+          O
+        </span>
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <button
+        type="button"
+        onClick={onMultiplayer}
+        disabled={loading}
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-md border border-border font-display text-sm font-700 tracking-[0.1em] text-foreground transition-colors hover:bg-secondary active:scale-[0.98]"
+      >
+        <Gamepad2 className="size-5" strokeWidth={2.5} />
+        MULTIJUGADOR
+      </button>
     </div>
   )
 }
