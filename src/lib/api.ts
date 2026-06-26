@@ -1,13 +1,13 @@
 import type { Board, BoardCell, Category, PlayerSummary } from '@/lib/game'
 
-const API_BASE = getApiBase()
-
 function getApiBase(): string {
   const envUrl = import.meta.env.VITE_API_URL
   if (envUrl) return envUrl
   if (import.meta.env.DEV) return 'http://localhost:8080'
   throw new Error('VITE_API_URL no está definida. Defínela en .env para producción.')
 }
+
+const API_BASE = getApiBase()
 
 class ApiError extends Error {
   constructor(
