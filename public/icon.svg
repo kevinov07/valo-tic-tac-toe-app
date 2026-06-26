@@ -5,11 +5,11 @@
     <rect x="90" y="90" width="60" height="60" fill="#2de1c2" rx="4"/>
     <rect x="90" y="30" width="60" height="60" fill="#ff4d5e" rx="4"/>
     <rect x="30" y="90" width="60" height="60" fill="#ff4d5e" rx="4"/>
-    <line x1="30" y1="30" x2="150" y2="30" stroke="#0f141a" stroke-width="6" stroke-linecap="round"/>
-    <line x1="30" y1="150" x2="150" y2="150" stroke="#0f141a" stroke-width="6" stroke-linecap="round"/>
-    <line x1="30" y1="30" x2="30" y2="150" stroke="#0f141a" stroke-width="6" stroke-linecap="round"/>
-    <line x1="150" y1="30" x2="150" y2="150" stroke="#0f141a" stroke-width="6" stroke-linecap="round"/>
-    <line x1="30" y1="90" x2="150" y2="90" stroke="#7aa2ff" stroke-width="6" stroke-linecap="round"/>
-    <line x1="90" y1="30" x2="90" y2="150" stroke="#ff4d5e" stroke-width="6" stroke-linecap="round"/>
+    <line x1="30" y1="30" x2="150" y2="30" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+    <line x1="30" y1="150" x2="150" y2="150" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+    <line x1="30" y1="30" x2="30" y2="150" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+    <line x1="150" y1="30" x2="150" y2="150" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+    <line x1="30" y1="90" x2="150" y2="90" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
+    <line x1="90" y1="30" x2="90" y2="150" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
   </g>
 </svg>
