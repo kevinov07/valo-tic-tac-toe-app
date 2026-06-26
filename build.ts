@@ -9,6 +9,7 @@ const result = await Bun.build({
   define: {
     'import.meta.env.PROD': 'true',
     'import.meta.env.DEV': 'false',
+    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL ?? ''),
   },
 })
 
