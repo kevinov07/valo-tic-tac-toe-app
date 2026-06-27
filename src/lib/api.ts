@@ -7,8 +7,6 @@ function getApiBase(): string {
   throw new Error('VITE_API_URL no está definida. Defínela en .env para producción.')
 }
 
-const API_BASE = getApiBase()
-
 class ApiError extends Error {
   constructor(
     message: string,
@@ -30,7 +28,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   try {
-    const res = await fetch(`${API_BASE}${path}`, {
+    const res = await fetch(`${getApiBase()}${path}`, {
       ...init,
       signal: controller.signal,
       headers: {
@@ -165,7 +163,7 @@ export async function searchPlayers(
 
 export function getWsBase(): string {
   const envUrl = import.meta.env.VITE_API_URL
-  if (envUrl) return envUrl.replace(/^http/, 'ws').replace(/\/+$/, '') + '/ws'
+  if (envUrl) return envUrl.replace(/\/+$/, '').replace(/^http/, 'ws') + '/ws'
   if (import.meta.env.DEV) return 'ws://localhost:8080/ws'
   throw new Error('VITE_API_URL no está definida. Defínela en .env para producción.')
 }
