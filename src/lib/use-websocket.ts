@@ -38,6 +38,7 @@ export interface WsMessage {
   winner?: number
   win_line?: number[]
   message?: string
+  from_player?: number
 }
 
 type WsHandler = (msg: WsMessage) => void
