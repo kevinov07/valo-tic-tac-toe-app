@@ -121,7 +121,7 @@ export function MultiplayerBoardScreen({
           {board.cols.map((col, c) => (
             <div
               key={`col-${c}`}
-              className="overflow-hidden rounded-md border border-border"
+              className="rounded-md border border-border"
             >
               <CategoryChip
                 category={col}
@@ -132,7 +132,7 @@ export function MultiplayerBoardScreen({
 
           {board.rows.map((row, r) => (
             <div key={`row-${r}`} className="contents">
-              <div className="overflow-hidden rounded-md border border-border">
+              <div className="rounded-md border border-border">
                 <CategoryChip
                   category={row}
                   active={

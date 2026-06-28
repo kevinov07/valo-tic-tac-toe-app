@@ -38,20 +38,44 @@ export function CategoryChip({
   return (
     <div
       className={cn(
-        'relative flex h-full w-full flex-col items-center justify-center gap-1 border-t-2 bg-card px-2 py-2 text-center transition-colors',
+        'group relative flex h-full w-full flex-col items-center justify-center gap-1 border-t-2 bg-card px-2 py-2 text-center transition-colors',
         colorClass[category.kind] ?? 'text-foreground border-t-border',
         active && 'bg-secondary',
       )}
     >
-      <div className="flex items-center gap-1.5">
-        <Icon className="size-3 shrink-0 sm:size-4 md:size-5" strokeWidth={2.5} aria-hidden="true" />
-        <span className="font-display text-[9px] font-600 tracking-[0.16em] text-muted-foreground sm:text-[10px] md:text-xs">
-          {label}
-        </span>
-      </div>
-      <span className="font-display text-xs font-700 leading-tight tracking-wide text-foreground text-balance sm:text-sm md:text-base">
-        {category.label}
-      </span>
+      {category.image_url ? (
+        <>
+          <div className="flex items-center gap-1.5">
+            <Icon className="size-3 shrink-0 sm:size-4 md:size-5" strokeWidth={2.5} aria-hidden="true" />
+            <span className="font-display text-[9px] font-600 tracking-[0.16em] text-muted-foreground sm:text-[10px] md:text-xs">
+              {label}
+            </span>
+          </div>
+          <img
+            src={category.image_url}
+            alt={category.label}
+            className="size-12 shrink-0 rounded-sm object-contain sm:size-14 md:size-16"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = '/avatar.png'
+            }}
+          />
+          <span className="font-sans text-xs font-700 text-foreground text-balance sm:text-sm">
+            {category.label}
+          </span>
+        </>
+      ) : (
+        <>
+          <div className="flex items-center gap-1.5">
+            <Icon className="size-3 shrink-0 sm:size-4 md:size-5" strokeWidth={2.5} aria-hidden="true" />
+            <span className="font-display text-[9px] font-600 tracking-[0.16em] text-muted-foreground sm:text-[10px] md:text-xs">
+              {label}
+            </span>
+          </div>
+          <span className="font-display text-xs font-700 leading-tight tracking-wide text-foreground text-balance sm:text-sm md:text-base">
+            {category.label}
+          </span>
+        </>
+      )}
     </div>
   )
 }

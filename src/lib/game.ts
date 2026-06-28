@@ -13,6 +13,7 @@ export interface Category {
   kind: CategoryKind
   label: string
   value: string
+  image_url?: string
 }
 
 export interface PlayerSummary {

@@ -82,10 +82,10 @@ export function PlayerSearch({
           </div>
 
           <div className="mb-3 grid grid-cols-2 gap-2">
-            <div className="overflow-hidden rounded-md border border-border">
+            <div className="rounded-md border border-border">
               <CategoryChip category={row} />
             </div>
-            <div className="overflow-hidden rounded-md border border-border">
+            <div className="rounded-md border border-border">
               <CategoryChip category={col} />
             </div>
           </div>
