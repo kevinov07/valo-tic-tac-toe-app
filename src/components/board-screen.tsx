@@ -25,8 +25,8 @@ export function BoardScreen({
   onNewBoard: () => void
 }) {
   return (
-    <div className="flex min-h-full flex-col px-6 pb-8 pt-6">
-      <header className="mb-6 flex items-center justify-between">
+    <div className="flex min-h-full flex-col px-3 pb-4 pt-3 sm:px-6 sm:pb-8 sm:pt-6">
+      <header className="mb-2 flex items-center justify-between sm:mb-6">
         <button
           type="button"
           onClick={onExit}
@@ -60,7 +60,7 @@ export function BoardScreen({
       </header>
 
       <div className="mx-auto w-full max-w-2xl">
-        <div className="grid grid-cols-[1.1fr_repeat(3,1fr)] grid-rows-[auto_repeat(3,1fr)] gap-2 sm:gap-3">
+        <div className="grid grid-cols-[1.1fr_repeat(3,1fr)] grid-rows-[auto_repeat(3,1fr)] gap-1 sm:gap-3">
           <div className="flex items-center justify-center rounded-md border border-dashed border-border bg-card/40">
             <Zap
               className="size-6 text-[color:var(--correct)] sm:size-7"

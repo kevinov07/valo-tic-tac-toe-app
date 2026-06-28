@@ -40,13 +40,12 @@ export function GridCell({
           : `${cell.playerAlias ?? ''} — ${isCorrect ? 'acierto' : 'fallo'}`
       }
       className={cn(
-        'group relative flex aspect-square w-full items-center justify-center overflow-hidden bg-card transition-all duration-150',
+        'group relative flex aspect-square w-full h-full items-center justify-center overflow-hidden bg-card transition-all duration-150',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         isDisabled && 'opacity-50',
         !disabled && (isEmpty || allowReanswer) && 'hover:bg-secondary active:scale-[0.97] cursor-pointer',
         active && 'bg-secondary animate-pulse-ring',
-        active && isCorrect && 'ring-2 ring-inset',
-        !active && isCorrect && 'ring-1 ring-inset',
+
         isWrong && 'animate-glitch-shake',
       )}
       style={
@@ -73,7 +72,7 @@ export function GridCell({
       {isEmpty && (
         <Plus
           className={cn(
-            'size-8 text-muted-foreground/40 transition-colors sm:size-10',
+            'size-6 text-muted-foreground/40 transition-colors sm:size-10',
             !disabled && 'group-hover:text-[color:var(--correct)]',
           )}
           strokeWidth={2}
@@ -90,11 +89,11 @@ export function GridCell({
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = '/avatar.png'
               }}
-              className="size-14 rounded-full object-cover sm:size-20"
+              className="size-14 rounded-full object-cover sm:size-20 md:size-24"
               style={{ boxShadow: `0 0 0 1px ${accentColor}` }}
             />
           )}
-          <span className="font-sans text-base font-700 leading-none text-foreground sm:text-lg">
+          <span className="font-sans text-xs font-700 leading-none text-foreground sm:text-lg">
             {cell.playerAlias}
           </span>
           {cell.teamName && (
@@ -111,13 +110,13 @@ export function GridCell({
       {isWrong && (
         <div className="animate-stamp-in flex flex-col items-center gap-1.5 px-2">
           <X
-            className="size-6 sm:size-7"
+            className="size-5 sm:size-7"
             strokeWidth={3}
             aria-hidden="true"
             style={{ color: accentColor }}
           />
           {cell.playerAlias && (
-            <span className="font-sans text-sm font-500 leading-none text-muted-foreground line-through sm:text-base">
+            <span className="font-sans text-[10px] font-500 leading-none text-muted-foreground line-through sm:text-base">
               {cell.playerAlias}
             </span>
           )}

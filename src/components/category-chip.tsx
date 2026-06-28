@@ -44,12 +44,12 @@ export function CategoryChip({
       )}
     >
       <div className="flex items-center gap-1.5">
-        <Icon className="size-4 shrink-0 sm:size-5" strokeWidth={2.5} aria-hidden="true" />
-        <span className="font-display text-[10px] font-600 tracking-[0.16em] text-muted-foreground sm:text-xs">
+        <Icon className="size-3 shrink-0 sm:size-4 md:size-5" strokeWidth={2.5} aria-hidden="true" />
+        <span className="font-display text-[9px] font-600 tracking-[0.16em] text-muted-foreground sm:text-[10px] md:text-xs">
           {label}
         </span>
       </div>
-      <span className="font-display text-sm font-700 leading-tight tracking-wide text-foreground text-balance sm:text-base">
+      <span className="font-display text-xs font-700 leading-tight tracking-wide text-foreground text-balance sm:text-sm md:text-base">
         {category.label}
       </span>
     </div>

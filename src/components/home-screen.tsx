@@ -26,7 +26,7 @@ export function HomeScreen({
           <br />
           <span className="text-[color:var(--correct)]">TIC TAC TOE</span>
         </h1>
-        <p className="mt-4 max-w-xs text-pretty font-sans text-sm leading-relaxed text-muted-foreground">
+        <p className="my-4 max-w-md text-pretty font-sans text-sm leading-relaxed text-muted-foreground">
           Un 3x3 donde cada celda cruza dos categorías. Nombra al pro que cumple
           ambas. Proyecto fan independiente, sin afiliación con Riot Games.
         </p>
@@ -57,36 +57,31 @@ export function HomeScreen({
         </p>
       )}
 
-      <button
-        type="button"
-        onClick={onPlay}
-        disabled={loading}
-        className="group flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[color:var(--correct)] font-display text-lg font-700 tracking-[0.1em] text-[color:var(--primary-foreground)] transition-transform active:scale-[0.98] disabled:opacity-60"
-      >
-        <Play className="size-5 fill-current" strokeWidth={0} />
-        {loading ? 'CARGANDO…' : 'JUGAR'}
-      </button>
-      <p className="mt-3 text-center font-display text-[10px] tracking-[0.2em] text-muted-foreground">
-        GENERA UN TABLERO ALEATORIO
-      </p>
+      <div className="flex flex-col gap-3 md:flex-row md:items-start">
+        <div className="flex flex-col md:flex-1">
+          <button
+            type="button"
+            onClick={onPlay}
+            disabled={loading}
+            className="group flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[color:var(--correct)] font-display text-lg font-700 tracking-[0.1em] text-[color:var(--primary-foreground)] transition-transform active:scale-[0.98] disabled:opacity-60 md:h-12 md:text-base"
+          >
+            <Play className="size-5 fill-current" strokeWidth={0} />
+            {loading ? 'CARGANDO…' : 'JUGAR'}
+          </button>
+        </div>
 
-      <div className="relative my-4 flex items-center gap-3">
-        <span className="h-px flex-1 bg-border" />
-        <span className="font-display text-[10px] tracking-[0.2em] text-muted-foreground">
-          O
-        </span>
-        <span className="h-px flex-1 bg-border" />
+        <div className="md:flex-1">
+          <button
+            type="button"
+            onClick={onMultiplayer}
+            disabled={loading}
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-md border border-border font-display text-sm font-700 tracking-[0.1em] text-foreground transition-colors hover:bg-secondary active:scale-[0.98]"
+          >
+            <Gamepad2 className="size-5" strokeWidth={2.5} />
+            MULTIJUGADOR
+          </button>
+        </div>
       </div>
-
-      <button
-        type="button"
-        onClick={onMultiplayer}
-        disabled={loading}
-        className="flex h-12 w-full items-center justify-center gap-2 rounded-md border border-border font-display text-sm font-700 tracking-[0.1em] text-foreground transition-colors hover:bg-secondary active:scale-[0.98]"
-      >
-        <Gamepad2 className="size-5" strokeWidth={2.5} />
-        MULTIJUGADOR
-      </button>
     </div>
   )
 }
