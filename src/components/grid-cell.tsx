@@ -104,6 +104,17 @@ export function GridCell({
               {cell.teamName.toUpperCase()}
             </span>
           )}
+          {cell.lastGuessWrong && cell.lastGuessAlias && (
+            <div className="mt-0.5 flex items-center gap-1">
+              <X className="size-3" strokeWidth={3} style={{ color: 'var(--wrong)' }} />
+              <span className="font-sans text-[8px] font-500 leading-none text-muted-foreground line-through sm:text-[10px]">
+                {cell.lastGuessAlias}
+              </span>
+              <span className="font-display text-[7px] tracking-[0.2em] sm:text-[8px]" style={{ color: 'var(--wrong)' }}>
+                MISS
+              </span>
+            </div>
+          )}
         </div>
       )}
 

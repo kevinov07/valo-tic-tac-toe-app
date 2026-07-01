@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { rowColFromIndex } from '@/lib/game'
-import type { Board, PlayerSummary } from '@/lib/game'
+import type { Board, PlayerSummary, GameConfig } from '@/lib/game'
 import { getWsBase } from '@/lib/api'
 import { useWebSocket } from '@/lib/use-websocket'
 import type { WsMessage } from '@/lib/use-websocket'
-import { wsBoardToBoard } from '@/lib/multiplayer'
+import { wsBoardToBoard, parseGameConfig } from '@/lib/multiplayer'
 import type { MultiplayerScreen } from '@/lib/multiplayer'
 import { MultiplayerLobby } from '@/components/multiplayer-lobby'
 import { MultiplayerBoardScreen } from '@/components/multiplayer-board-screen'
@@ -24,12 +24,23 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
   const [activeCell, setActiveCell] = useState<number | null>(null)
   const [sendingGuess, setSendingGuess] = useState(false)
   const [pendingRequest, setPendingRequest] = useState<{ type: string; from: number } | null>(null)
+  const [gameConfig, setGameConfig] = useState<GameConfig | null>(null)
+  const stealFailTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map())
 
   useEffect(() => {
     if (!sendingGuess) return
     const timer = setTimeout(() => setSendingGuess(false), 8000)
     return () => clearTimeout(timer)
   }, [sendingGuess])
+
+  useEffect(() => {
+    return () => {
+      for (const [, timer] of stealFailTimers.current) {
+        clearTimeout(timer)
+      }
+      stealFailTimers.current.clear()
+    }
+  }, [])
 
   const wsUrl = getWsBase()
   const { connected, connect, disconnect, send, on } =
@@ -69,6 +80,9 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
       }
 
       const idx = msg.row * 3 + msg.col
+      const prevCell = board.cells[idx]
+      const wasPreviouslyCorrect = prevCell.status === 'correct'
+
       const nextCells = board.cells.map((cell, i) => {
         if (i !== idx) return cell
         if (msg.correct) {
@@ -92,6 +106,27 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
         setYourTurn(msg.your_turn)
       }
 
+      // Si falló el robo (wrong en celda que ya tenía respuesta correcta),
+      // mostrar la animación de error y luego restaurar el estado anterior.
+      if (!msg.correct && wasPreviouslyCorrect) {
+        if (stealFailTimers.current.has(idx)) {
+          clearTimeout(stealFailTimers.current.get(idx)!)
+        }
+        stealFailTimers.current.set(
+          idx,
+          setTimeout(() => {
+            stealFailTimers.current.delete(idx)
+            setBoard((prev) => {
+              if (!prev) return prev
+              const restored = prev.cells.map((c, i) =>
+                i === idx ? prevCell : c,
+              )
+              return { ...prev, cells: restored }
+            })
+          }, 600),
+        )
+      }
+
       if (
         msg.type === 'game_over' &&
         msg.winner !== undefined &&
@@ -113,6 +148,7 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
         setRoomCode(msg.code ?? null)
         setPlayerIndex(msg.player_index ?? 0)
         setYourTurn(msg.your_turn ?? true)
+        setGameConfig(parseGameConfig(msg))
         setScreen('waiting')
       }),
     )
@@ -123,6 +159,7 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
           setBoard(wsBoardToBoard(msg.board))
           setYourTurn(msg.your_turn ?? false)
         }
+        setGameConfig(parseGameConfig(msg))
         setSendingGuess(false)
         setActiveCell(null)
         setScreen('board')
@@ -137,6 +174,7 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
           setBoard(wsBoardToBoard(msg.board))
           setYourTurn(msg.your_turn ?? false)
         }
+        setGameConfig(parseGameConfig(msg))
         setScreen('board')
       }),
     )
@@ -216,12 +254,20 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
     return () => unsubs.forEach((u) => u())
   }, [on, updateBoardFromGuess, goToLobby])
 
-  const handleCreateRoom = useCallback(() => {
-    setError(null)
-    if (!send({ type: 'create_room' })) {
-      setError('No hay conexión con el servidor')
-    }
-  }, [send])
+  const handleCreateRoom = useCallback(
+    (config: GameConfig) => {
+      setError(null)
+      setGameConfig(config)
+      const payload: Record<string, unknown> = { type: 'create_room' }
+      if (!config.stealEnabled) payload.steal_enabled = false
+      if (config.categories.length > 0) payload.categories = config.categories
+      if (config.leagues.length > 0) payload.leagues = config.leagues
+      if (!send(payload)) {
+        setError('No hay conexión con el servidor')
+      }
+    },
+    [send],
+  )
 
   const handleJoinRoom = useCallback(
     (code: string) => {
@@ -353,6 +399,7 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
               activeCell={activeCell}
               disabled={sendingGuess}
               pendingRequest={pendingRequest}
+              stealEnabled={gameConfig?.stealEnabled ?? true}
               onSelectCell={handleSelectCell}
               onExit={handleExitGame}
               onRequestReset={handleRequestReset}

@@ -1,4 +1,4 @@
-import type { Board } from '@/lib/game'
+import type { Board, GameConfig } from '@/lib/game'
 import type { WsMessage } from '@/lib/use-websocket'
 
 export type MultiplayerScreen = 'lobby' | 'waiting' | 'board' | 'result'
@@ -27,28 +27,35 @@ export function emptyMultiplayerState(): MultiplayerState {
   }
 }
 
+export function parseGameConfig(msg: WsMessage): GameConfig {
+  return {
+    stealEnabled: msg.steal_enabled ?? true,
+    categories: (msg.categories ?? []) as GameConfig['categories'],
+    leagues: msg.leagues ?? [],
+  }
+}
+
 export function wsBoardToBoard(wsBoard: NonNullable<WsMessage['board']>): Board {
   const cells = wsBoard.cells.flatMap((row, r) =>
     row.map((cell, c) => {
-      const status = cell.last_guess_wrong && cell.last_guess_alias
-        ? 'wrong'
-        : cell.player_alias
-          ? 'correct'
-          : 'empty'
-      if (status === 'wrong') {
-        return {
-          status: 'wrong' as const,
-          playerAlias: cell.last_guess_alias!,
-          ownerPlayer: -1,
-        }
-      }
-      if (status === 'correct') {
+      // Si hay una respuesta correcta, la celda es 'correcta' aunque el
+      // último intento (robo fallido) haya sido incorrecto.
+      if (cell.player_alias) {
         return {
           status: 'correct' as const,
           playerAlias: cell.player_alias!,
           teamName: cell.team_name ?? '',
           avatarUrl: cell.avatar_url,
           ownerPlayer: cell.owner_player ?? -1,
+          lastGuessAlias: cell.last_guess_alias,
+          lastGuessWrong: cell.last_guess_wrong,
+        }
+      }
+      if (cell.last_guess_wrong && cell.last_guess_alias) {
+        return {
+          status: 'wrong' as const,
+          playerAlias: cell.last_guess_alias!,
+          ownerPlayer: -1,
         }
       }
       return { status: 'empty' as const }

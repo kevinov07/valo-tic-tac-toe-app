@@ -29,6 +29,8 @@ export interface BoardCell {
   teamName?: string
   avatarUrl?: string
   ownerPlayer?: number // -1 o undefined = sin dueño, 0 = jugador 1, 1 = jugador 2
+  lastGuessAlias?: string  // último alias intentado (correcto o incorrecto)
+  lastGuessWrong?: boolean // si el último intento fue incorrecto
 }
 
 export interface Board {
@@ -60,14 +62,42 @@ export const kindColorVar: Record<CategoryKind, string> = {
 }
 
 export const kindLabel: Record<CategoryKind, string> = {
-  current_team: 'EQUIPO',
-  past_team: 'EQUIPO',
+  current_team: 'EQUIPO ACTUAL',
+  past_team: 'EQUIPO PASADO',
   country: 'PAÍS',
   role: 'ROL',
   is_captain: 'CAPITÁN',
   teammate: 'COMPAÑERO',
   agent: 'AGENTE',
   title: 'TÍTULO',
+}
+
+export const CATEGORY_KINDS: CategoryKind[] = [
+  'current_team',
+  'past_team',
+  'country',
+  'role',
+  'agent',
+  'is_captain',
+  'teammate',
+  'title',
+]
+
+export const VCT_LEAGUES = [
+  { value: 'americas', label: 'Americas' },
+  { value: 'emea', label: 'EMEA' },
+  { value: 'pacific', label: 'Pacific' },
+  { value: 'china', label: 'China' },
+] as const
+
+export interface GameConfig {
+  stealEnabled: boolean
+  categories: CategoryKind[]
+  leagues: string[]
+}
+
+export function defaultGameConfig(): GameConfig {
+  return { stealEnabled: true, categories: [], leagues: [] }
 }
 
 export const WINNING_COMBINATIONS: number[][] = [

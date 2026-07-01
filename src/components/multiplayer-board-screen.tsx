@@ -1,4 +1,4 @@
-import { ChevronLeft, RefreshCw, Users, Zap, Check, X, Loader2 } from 'lucide-react'
+import { ChevronLeft, RefreshCw, Users, Zap, Ban, Check, X, Loader2 } from 'lucide-react'
 import type { Board } from '@/lib/game'
 import { cellIndex } from '@/lib/game'
 import { CategoryChip } from '@/components/category-chip'
@@ -13,6 +13,7 @@ export function MultiplayerBoardScreen({
   activeCell,
   disabled,
   pendingRequest,
+  stealEnabled,
   onSelectCell,
   onExit,
   onRequestReset,
@@ -26,6 +27,7 @@ export function MultiplayerBoardScreen({
   activeCell: number | null
   disabled: boolean
   pendingRequest: { type: string; from: number } | null
+  stealEnabled: boolean
   onSelectCell: (index: number) => void
   onExit: () => void
   onRequestReset: () => void
@@ -57,6 +59,7 @@ export function MultiplayerBoardScreen({
         </div>
 
         <div className="flex items-center gap-2">
+          <StealBadge enabled={stealEnabled} />
           <button
             type="button"
             onClick={onRequestReset}
@@ -152,7 +155,7 @@ export function MultiplayerBoardScreen({
                       active={activeCell === idx}
                       disabled={disabled || !yourTurn}
                       onClick={() => onSelectCell(idx)}
-                      allowReanswer
+                      allowReanswer={stealEnabled}
                     />
                   </div>
                 )
@@ -201,6 +204,33 @@ function TurnIndicator({ yourTurn }: { yourTurn: boolean }) {
     >
       {yourTurn ? 'TU TURNO' : 'ESPERANDO'}
     </span>
+  )
+}
+
+function StealBadge({ enabled }: { enabled: boolean }) {
+  return (
+    <div
+      className={cn(
+        'flex items-center gap-1 rounded-md border px-2 py-1.5',
+        enabled
+          ? 'border-[color:var(--correct)]/30 bg-[color:var(--correct)]/10'
+          : 'border-border',
+      )}
+    >
+      {enabled ? (
+        <Zap className="size-3 text-[color:var(--correct)]" strokeWidth={2.5} />
+      ) : (
+        <Ban className="size-3 text-muted-foreground" strokeWidth={2.5} />
+      )}
+      <span
+        className={cn(
+          'font-display text-[9px] tracking-wider',
+          enabled ? 'text-[color:var(--correct)]' : 'text-muted-foreground',
+        )}
+      >
+        {enabled ? 'STEAL' : 'NO STEAL'}
+      </span>
+    </div>
   )
 }
 

@@ -39,6 +39,9 @@ export interface WsMessage {
   win_line?: number[]
   message?: string
   from_player?: number
+  steal_enabled?: boolean
+  categories?: string[]
+  leagues?: string[]
 }
 
 type WsHandler = (msg: WsMessage) => void
