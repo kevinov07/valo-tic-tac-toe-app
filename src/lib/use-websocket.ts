@@ -42,6 +42,9 @@ export interface WsMessage {
   steal_enabled?: boolean
   categories?: string[]
   leagues?: string[]
+  turn_duration?: number
+  turn_deadline?: number
+  show_hints?: boolean
 }
 
 type WsHandler = (msg: WsMessage) => void

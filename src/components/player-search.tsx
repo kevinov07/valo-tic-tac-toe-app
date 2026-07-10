@@ -9,11 +9,13 @@ export function PlayerSearch({
   col,
   onGuess,
   onClose,
+  showHints,
 }: {
   row: Category
   col: Category
   onGuess: (player: PlayerSummary) => void
   onClose: () => void
+  showHints: boolean
 }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<PlayerSummary[]>([])
@@ -114,18 +116,20 @@ export function PlayerSearch({
                   <span className="font-sans text-base font-600 text-foreground">
                     {p.alias}
                   </span>
-                  <span className="flex items-center gap-2 font-display text-[10px] tracking-wider">
-                    {p.country_code && (
-                      <span className="rounded bg-secondary px-1.5 py-0.5 text-muted-foreground">
-                        {p.country_code.toUpperCase()}
-                      </span>
-                    )}
-                    {p.role && (
-                      <span className="text-[color:var(--type-role)]">
-                        {p.role.toUpperCase()}
-                      </span>
-                    )}
-                  </span>
+                  {showHints && (
+                    <span className="flex items-center gap-2 font-display text-[10px] tracking-wider">
+                      {p.country_code && (
+                        <span className="rounded bg-secondary px-1.5 py-0.5 text-muted-foreground">
+                          {p.country_code.toUpperCase()}
+                        </span>
+                      )}
+                      {p.role && (
+                        <span className="text-[color:var(--type-role)]">
+                          {p.role.toUpperCase()}
+                        </span>
+                      )}
+                    </span>
+                  )}
                 </button>
               </li>
             ))}

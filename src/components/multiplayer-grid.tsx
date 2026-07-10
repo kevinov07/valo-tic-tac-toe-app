@@ -25,7 +25,14 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
   const [sendingGuess, setSendingGuess] = useState(false)
   const [pendingRequest, setPendingRequest] = useState<{ type: string; from: number } | null>(null)
   const [gameConfig, setGameConfig] = useState<GameConfig | null>(null)
+  const [turnDeadline, setTurnDeadline] = useState<number>(0)
+  const [turnRemaining, setTurnRemaining] = useState<number>(0)
   const stealFailTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map())
+  const turnTimeoutSent = useRef(false)
+
+  const wsUrl = getWsBase()
+  const { connected, connect, disconnect, send, on } =
+    useWebSocket(wsUrl)
 
   useEffect(() => {
     if (!sendingGuess) return
@@ -42,9 +49,26 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
     }
   }, [])
 
-  const wsUrl = getWsBase()
-  const { connected, connect, disconnect, send, on } =
-    useWebSocket(wsUrl)
+  // Timer tick: update display remaining and send turn_timeout when deadline expires
+  useEffect(() => {
+    if (turnDeadline <= 0) {
+      setTurnRemaining(0)
+      return
+    }
+
+    const tick = () => {
+      const r = Math.max(0, Math.ceil((turnDeadline - Date.now()) / 1000))
+      setTurnRemaining(r)
+      if (r <= 0 && yourTurn && !turnTimeoutSent.current) {
+        turnTimeoutSent.current = true
+        send({ type: 'turn_timeout' })
+      }
+    }
+
+    tick()
+    const interval = setInterval(tick, 500)
+    return () => clearInterval(interval)
+  }, [turnDeadline, yourTurn, send])
 
   const screenRef = useRef(screen)
   screenRef.current = screen
@@ -160,6 +184,8 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
           setYourTurn(msg.your_turn ?? false)
         }
         setGameConfig(parseGameConfig(msg))
+        if (msg.turn_deadline) setTurnDeadline(msg.turn_deadline)
+        turnTimeoutSent.current = false
         setSendingGuess(false)
         setActiveCell(null)
         setScreen('board')
@@ -175,6 +201,8 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
           setYourTurn(msg.your_turn ?? false)
         }
         setGameConfig(parseGameConfig(msg))
+        if (msg.turn_deadline) setTurnDeadline(msg.turn_deadline)
+        turnTimeoutSent.current = false
         setScreen('board')
       }),
     )
@@ -183,6 +211,8 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
       on('guess_result', (msg) => {
         setSendingGuess(false)
         setActiveCell(null)
+        if (msg.turn_deadline) setTurnDeadline(msg.turn_deadline)
+        turnTimeoutSent.current = false
         updateBoardFromGuess(msg)
       }),
     )
@@ -191,7 +221,16 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
       on('game_over', (msg) => {
         setSendingGuess(false)
         setActiveCell(null)
+        setTurnDeadline(0)
         updateBoardFromGuess(msg)
+      }),
+    )
+
+    unsubs.push(
+      on('turn_switched', (msg) => {
+        setYourTurn(msg.your_turn ?? false)
+        if (msg.turn_deadline) setTurnDeadline(msg.turn_deadline)
+        turnTimeoutSent.current = false
       }),
     )
 
@@ -214,6 +253,8 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
         setSendingGuess(false)
         setActiveCell(null)
         setPendingRequest(null)
+        setTurnDeadline(0)
+        turnTimeoutSent.current = false
         setScreen('board')
       }),
     )
@@ -262,6 +303,8 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
       if (!config.stealEnabled) payload.steal_enabled = false
       if (config.categories.length > 0) payload.categories = config.categories
       if (config.leagues.length > 0) payload.leagues = config.leagues
+      if (config.turnDuration > 0) payload.turn_duration = config.turnDuration
+      if (!config.showHints) payload.show_hints = false
       if (!send(payload)) {
         setError('No hay conexión con el servidor')
       }
@@ -400,6 +443,7 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
               disabled={sendingGuess}
               pendingRequest={pendingRequest}
               stealEnabled={gameConfig?.stealEnabled ?? true}
+              turnRemaining={turnRemaining}
               onSelectCell={handleSelectCell}
               onExit={handleExitGame}
               onRequestReset={handleRequestReset}
@@ -413,6 +457,7 @@ export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
                 col={board.cols[activeCell % 3]}
                 onGuess={handleGuess}
                 onClose={() => setActiveCell(null)}
+                showHints={gameConfig?.showHints ?? true}
               />
             )}
           </>

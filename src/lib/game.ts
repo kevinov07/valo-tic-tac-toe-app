@@ -94,10 +94,12 @@ export interface GameConfig {
   stealEnabled: boolean
   categories: CategoryKind[]
   leagues: string[]
+  turnDuration: number
+  showHints: boolean
 }
 
 export function defaultGameConfig(): GameConfig {
-  return { stealEnabled: true, categories: [], leagues: [] }
+  return { stealEnabled: true, categories: [], leagues: [], turnDuration: 40, showHints: true }
 }
 
 export const WINNING_COMBINATIONS: number[][] = [

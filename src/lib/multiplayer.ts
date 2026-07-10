@@ -32,6 +32,8 @@ export function parseGameConfig(msg: WsMessage): GameConfig {
     stealEnabled: msg.steal_enabled ?? true,
     categories: (msg.categories ?? []) as GameConfig['categories'],
     leagues: msg.leagues ?? [],
+    turnDuration: msg.turn_duration ?? 40,
+    showHints: msg.show_hints ?? true,
   }
 }
 

@@ -1,4 +1,4 @@
-import { ChevronLeft, RefreshCw, Users, Zap, Ban, Check, X, Loader2 } from 'lucide-react'
+import { ChevronLeft, RefreshCw, Users, Zap, Ban, Check, X, Loader2, Timer } from 'lucide-react'
 import type { Board } from '@/lib/game'
 import { cellIndex } from '@/lib/game'
 import { CategoryChip } from '@/components/category-chip'
@@ -14,6 +14,7 @@ export function MultiplayerBoardScreen({
   disabled,
   pendingRequest,
   stealEnabled,
+  turnRemaining,
   onSelectCell,
   onExit,
   onRequestReset,
@@ -28,6 +29,7 @@ export function MultiplayerBoardScreen({
   disabled: boolean
   pendingRequest: { type: string; from: number } | null
   stealEnabled: boolean
+  turnRemaining: number
   onSelectCell: (index: number) => void
   onExit: () => void
   onRequestReset: () => void
@@ -54,7 +56,7 @@ export function MultiplayerBoardScreen({
             VALO TIC TAC TOE
           </p>
           <div className="flex items-center justify-center gap-2">
-            <TurnIndicator yourTurn={yourTurn} />
+            <TurnIndicator yourTurn={yourTurn} turnRemaining={turnRemaining} />
           </div>
         </div>
 
@@ -194,16 +196,33 @@ export function MultiplayerBoardScreen({
   )
 }
 
-function TurnIndicator({ yourTurn }: { yourTurn: boolean }) {
+function TurnIndicator({ yourTurn, turnRemaining }: { yourTurn: boolean; turnRemaining: number }) {
   return (
-    <span
-      className={cn(
-        'font-display text-sm font-700 tracking-widest',
-        yourTurn ? 'text-[color:var(--correct)]' : 'text-muted-foreground',
+    <div className="flex items-center gap-2">
+      <span
+        className={cn(
+          'font-display text-sm font-700 tracking-widest',
+          yourTurn ? 'text-[color:var(--correct)]' : 'text-muted-foreground',
+        )}
+      >
+        {yourTurn ? 'TU TURNO' : 'ESPERANDO'}
+      </span>
+      {turnRemaining > 0 && (
+        <span
+          className={cn(
+            'flex items-center gap-1.5 rounded-md border px-3 py-1 font-display text-base font-700 tabular-nums tracking-wider',
+            yourTurn
+              ? turnRemaining <= 10
+                ? 'border-[color:var(--wrong)] text-[color:var(--wrong)]'
+                : 'border-[color:var(--correct)]/30 text-[color:var(--correct)]'
+              : 'border-border text-muted-foreground',
+          )}
+        >
+          <Timer className="size-4" strokeWidth={2.5} />
+          {turnRemaining}s
+        </span>
       )}
-    >
-      {yourTurn ? 'TU TURNO' : 'ESPERANDO'}
-    </span>
+    </div>
   )
 }
 

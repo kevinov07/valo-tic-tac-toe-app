@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Gamepad2, Link, Loader2, LogIn, Plus, Shield, Globe, Crosshair, Crown, Users, Swords, Trophy, Sword, Zap, Ban } from 'lucide-react'
+import { Gamepad2, Link, Loader2, LogIn, Plus, Shield, Globe, Crosshair, Crown, Users, Swords, Trophy, Sword, Zap, Ban, Timer, Eye, EyeOff } from 'lucide-react'
 import { CATEGORY_KINDS, VCT_LEAGUES, kindLabel } from '@/lib/game'
 import type { GameConfig, CategoryKind } from '@/lib/game'
 import { cn } from '@/lib/utils'
@@ -31,6 +31,8 @@ export function MultiplayerLobby({
   const [stealEnabled, setStealEnabled] = useState(true)
   const [selectedCategories, setSelectedCategories] = useState<CategoryKind[]>([])
   const [selectedLeagues, setSelectedLeagues] = useState<string[]>([])
+  const [turnDuration, setTurnDuration] = useState(40)
+  const [showHints, setShowHints] = useState(true)
 
   const toggleCategory = (kind: CategoryKind) => {
     setSelectedCategories((prev) =>
@@ -49,6 +51,8 @@ export function MultiplayerLobby({
       stealEnabled,
       categories: selectedCategories,
       leagues: selectedLeagues,
+      turnDuration,
+      showHints,
     })
   }
 
@@ -75,7 +79,7 @@ export function MultiplayerLobby({
         <p className="font-display text-[11px] tracking-[0.4em] text-[color:var(--correct)]">
           MULTIJUGADOR
         </p>
-        <h1 className="mt-2 font-display text-3xl font-700 leading-none tracking-tight text-foreground">
+        <h1 className="my-2 font-display text-3xl font-700 leading-none tracking-tight text-foreground">
           PARTIDA RÁPIDA
         </h1>
       </div>
@@ -161,6 +165,71 @@ export function MultiplayerLobby({
               {stealEnabled
                 ? 'Las celdas se pueden re-responder y robar al rival.'
                 : 'Cada celda se responde una sola vez. No se puede robar.'}
+            </p>
+          </div>
+
+          {/* Turn timer */}
+          <div className="rounded-md border border-border bg-card p-3">
+            <div className="flex items-center gap-2">
+              <Timer className="size-4 text-muted-foreground" strokeWidth={2.5} />
+              <span className="font-display text-xs tracking-wider text-foreground">
+                Tiempo por turno
+              </span>
+            </div>
+            <div className="mt-2 flex items-center gap-3">
+              <input
+                type="range"
+                min={0}
+                max={120}
+                step={5}
+                value={turnDuration}
+                onChange={(e) => setTurnDuration(Number(e.target.value))}
+                className="flex-1 accent-[color:var(--correct)]"
+              />
+              <span className="min-w-[3rem] text-right font-display text-sm font-700 tabular-nums text-foreground">
+                {turnDuration > 0 ? `${turnDuration}s` : '∞'}
+              </span>
+            </div>
+            <p className="mt-1.5 font-sans text-[10px] text-muted-foreground">
+              {turnDuration > 0
+                ? `Cada jugador tiene ${turnDuration} segundos por turno.`
+                : 'Sin límite de tiempo.'}
+            </p>
+          </div>
+
+          {/* Hints toggle */}
+          <div className="rounded-md border border-border bg-card p-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {showHints ? (
+                  <Eye className="size-4 text-[color:var(--correct)]" strokeWidth={2.5} />
+                ) : (
+                  <EyeOff className="size-4 text-muted-foreground" strokeWidth={2.5} />
+                )}
+                <span className="font-display text-xs tracking-wider text-foreground">
+                  Pistas
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowHints(!showHints)}
+                className={cn(
+                  'relative h-6 w-11 rounded-full transition-colors',
+                  showHints ? 'bg-[color:var(--correct)]' : 'bg-border',
+                )}
+              >
+                <span
+                  className={cn(
+                    'absolute left-0.5 top-0.5 size-5 rounded-full bg-white transition-transform',
+                    showHints && 'translate-x-5',
+                  )}
+                />
+              </button>
+            </div>
+            <p className="mt-1.5 font-sans text-[10px] text-muted-foreground">
+              {showHints
+                ? 'El rol y país del jugador se muestran en los resultados de búsqueda.'
+                : 'Solo se muestra el alias del jugador en la búsqueda.'}
             </p>
           </div>
 
