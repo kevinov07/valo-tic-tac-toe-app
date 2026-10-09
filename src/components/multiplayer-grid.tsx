@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft, Check, Copy, Loader2 } from 'lucide-react'
 import { rowColFromIndex } from '@/lib/game'
 import type { Board, PlayerSummary, GameConfig } from '@/lib/game'
 import { getWsBase } from '@/lib/api'
@@ -489,6 +489,18 @@ function WaitingScreen({
   roomCode: string
   onCancel: () => void
 }) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(roomCode)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Clipboard no disponible; el código se muestra en pantalla.
+    }
+  }, [roomCode])
+
   return (
     <div className="flex min-h-full flex-col items-center justify-center px-6 pb-8 pt-12">
       <div className="mb-8 text-center">
@@ -508,6 +520,19 @@ function WaitingScreen({
           {roomCode}
         </p>
       </div>
+
+      <button
+        type="button"
+        onClick={handleCopy}
+        className="mb-8 flex h-10 items-center gap-2 rounded-md border border-border px-4 font-display text-xs tracking-wider text-muted-foreground transition-colors hover:text-foreground"
+      >
+        {copied ? (
+          <Check className="size-4 text-[color:var(--correct)]" />
+        ) : (
+          <Copy className="size-4" />
+        )}
+        {copied ? 'COPIADO' : 'COPIAR CÓDIGO'}
+      </button>
 
       <div className="mb-8 flex items-center gap-2 text-muted-foreground">
         <Loader2 className="size-4 animate-spin" />

@@ -81,7 +81,7 @@ export function GridCell({
       )}
 
       {isCorrect && cell.playerAlias && (
-        <div className="animate-stamp-in relative z-10 flex flex-col items-center gap-1.5 px-2">
+        <div className="animate-stamp-in absolute inset-0 z-10 flex flex-col items-center justify-center gap-0.5 px-1 sm:gap-1.5 sm:px-2">
           {cell.avatarUrl && (
             <img
               src={cell.avatarUrl}
@@ -89,16 +89,16 @@ export function GridCell({
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = '/avatar.png'
               }}
-              className="size-14 rounded-full object-cover sm:size-20 md:size-24"
+              className="aspect-square h-[48%] max-h-14 w-auto max-w-full rounded-full object-cover sm:max-h-20 md:max-h-24"
               style={{ boxShadow: `0 0 0 1px ${accentColor}` }}
             />
           )}
-          <span className="font-sans text-xs font-700 leading-none text-foreground sm:text-lg">
+          <span className="max-w-full truncate font-sans text-[10px] font-700 leading-none text-foreground sm:text-lg">
             {cell.playerAlias}
           </span>
           {cell.teamName && (
             <span
-              className="font-display text-[10px] tracking-[0.12em] sm:text-xs"
+              className="max-w-full truncate font-display text-[8px] tracking-[0.12em] sm:text-xs"
               style={{ color: accentColor }}
             >
               {cell.teamName.toUpperCase()}
@@ -119,7 +119,7 @@ export function GridCell({
       )}
 
       {isWrong && (
-        <div className="animate-stamp-in flex flex-col items-center gap-1.5 px-2">
+        <div className="animate-stamp-in absolute inset-0 flex flex-col items-center justify-center gap-1 px-1 sm:gap-1.5 sm:px-2">
           <X
             className="size-5 sm:size-7"
             strokeWidth={3}

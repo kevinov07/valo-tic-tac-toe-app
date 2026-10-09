@@ -150,7 +150,7 @@ export function MultiplayerBoardScreen({
                 return (
                   <div
                     key={idx}
-                    className="overflow-hidden rounded-md border border-border"
+                    className="min-h-[4.5rem] overflow-hidden rounded-md border border-border sm:min-h-[7rem]"
                   >
                     <GridCell
                       cell={board.cells[idx]}
