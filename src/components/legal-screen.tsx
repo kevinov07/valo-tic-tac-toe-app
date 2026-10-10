@@ -86,13 +86,6 @@ function Privacy() {
           de terceros.
         </p>
       </Section>
-
-      <Section title="Contacto">
-        <p>
-          Este proyecto no dispone de un correo de contacto dedicado para
-          consultas de privacidad.
-        </p>
-      </Section>
     </div>
   )
 }
@@ -131,13 +124,6 @@ function Terms() {
           publicitarios ni de los terceros que los sirven. Esta página no está
           afiliada a Riot Games ni a las marcas de los equipos y organizaciones
           mencionadas.
-        </p>
-      </Section>
-
-      <Section title="Contacto">
-        <p>
-          Para usos legítimos de marcas, retirada de contenido u otras
-          consultas, contacta al responsable del sitio.
         </p>
       </Section>
     </div>
