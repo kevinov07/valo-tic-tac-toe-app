@@ -89,13 +89,8 @@ function Privacy() {
 
       <Section title="Contacto">
         <p>
-          Este proyecto no dispone de un correo de contacto dedicado. Si tienes
-          preguntas sobre privacidad o quieres ejercer tus derechos, abre un
-          aviso en{' '}
-          <ExternalLink href="https://github.com/kevinov07/valo-tic-tac-toe-app">
-            el repositorio del proyecto
-          </ExternalLink>
-          .
+          Este proyecto no dispone de un correo de contacto dedicado para
+          consultas de privacidad.
         </p>
       </Section>
     </div>
@@ -108,11 +103,9 @@ function Terms() {
       <Section title="Proyecto fan independiente">
         <p>
           VALO TIC TAC TOE es un proyecto fan independiente, creado por fans y
-          sin afiliación, patrocinio ni respaldo de Riot Games. El sitio
-          muestra publicidad para cubrir los costes de hosting y mantenimiento;
-          el acceso al juego sigue siendo gratuito. No reclamamos derechos
-          sobre los nombres, marcas, personajes ni estadísticas de Valorant,
-          que pertenecen a sus respectivos dueños.
+          sin afiliación, patrocinio ni respaldo de Riot Games. No reclamamos
+          derechos sobre los nombres, marcas, personajes ni estadísticas de
+          Valorant, que pertenecen a sus respectivos dueños.
         </p>
       </Section>
 
@@ -144,11 +137,7 @@ function Terms() {
       <Section title="Contacto">
         <p>
           Para usos legítimos de marcas, retirada de contenido u otras
-          consultas, abre un aviso en{' '}
-          <ExternalLink href="https://github.com/kevinov07/valo-tic-tac-toe-app">
-            el repositorio del proyecto
-          </ExternalLink>
-          .
+          consultas, contacta al responsable del sitio.
         </p>
       </Section>
     </div>
