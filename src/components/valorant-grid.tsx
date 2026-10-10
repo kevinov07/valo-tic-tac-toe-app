@@ -12,8 +12,10 @@ import { BoardScreen } from '@/components/board-screen'
 import { ResultScreen } from '@/components/result-screen'
 import { PlayerSearch } from '@/components/player-search'
 import { MultiplayerGrid } from '@/components/multiplayer-grid'
+import { LegalScreen } from '@/components/legal-screen'
+import { ConsentBanner } from '@/components/consent-banner'
 
-type Screen = 'home' | 'board' | 'result' | 'multiplayer'
+type Screen = 'home' | 'board' | 'result' | 'multiplayer' | 'legal'
 
 export function ValorantGrid() {
   const [screen, setScreen] = useState<Screen>('home')
@@ -115,19 +117,27 @@ export function ValorantGrid() {
     [board, activeCell, guessesLeft, guessing, finishIfNeeded],
   )
 
-  return screen === 'multiplayer' ? (
-    <MultiplayerGrid onBack={() => setScreen('home')} />
-  ) : (
-    <main className="flex min-h-[100dvh] justify-center bg-background sm:items-center sm:py-6">
-      <div className="relative flex min-h-[100dvh] w-full max-w-4xl flex-col bg-background">
-        {screen === 'home' && (
-          <HomeScreen
-            onPlay={startGame}
-            onMultiplayer={() => setScreen('multiplayer')}
-            loading={loading}
-            error={error}
-          />
-        )}
+  return (
+    <>
+      <ConsentBanner />
+      {screen === 'multiplayer' ? (
+        <MultiplayerGrid onBack={() => setScreen('home')} />
+      ) : (
+        <main className="flex min-h-[100dvh] justify-center bg-background sm:items-center sm:py-6">
+          <div className="relative flex min-h-[100dvh] w-full max-w-4xl flex-col bg-background">
+            {screen === 'home' && (
+              <HomeScreen
+                onPlay={startGame}
+                onMultiplayer={() => setScreen('multiplayer')}
+                onLegal={() => setScreen('legal')}
+                loading={loading}
+                error={error}
+              />
+            )}
+
+            {screen === 'legal' && (
+              <LegalScreen onBack={() => setScreen('home')} />
+            )}
 
         {screen === 'board' && board && (
           <BoardScreen
@@ -167,9 +177,12 @@ export function ValorantGrid() {
             col={board.cols[activeCell % 3]}
             onGuess={handleGuess}
             onClose={() => setActiveCell(null)}
+            showHints={true}
           />
         )}
-      </div>
-    </main>
+          </div>
+        </main>
+      )}
+    </>
   )
 }

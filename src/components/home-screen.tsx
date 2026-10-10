@@ -1,13 +1,16 @@
 import { Shield, Globe, Crosshair, Crown, Users, Play, Gamepad2 } from 'lucide-react'
+import { AdSlot } from '@/components/ad-slot'
 
 export function HomeScreen({
   onPlay,
   onMultiplayer,
+  onLegal,
   loading,
   error,
 }: {
   onPlay: () => void
   onMultiplayer?: () => void
+  onLegal?: () => void
   loading?: boolean
   error?: string | null
 }) {
@@ -82,6 +85,31 @@ export function HomeScreen({
           </button>
         </div>
       </div>
+
+      <AdSlot placement="home" className="mb-4 min-h-[90px] sm:min-h-[110px]" />
+
+      <footer className="mt-2 flex flex-col items-center gap-2 border-t border-border pt-4 text-center">
+        <p className="font-sans text-[10px] leading-relaxed text-muted-foreground/70">
+          Proyecto fan independiente, sin afiliación con Riot Games.
+        </p>
+        <div className="flex items-center gap-3 font-display text-[10px] tracking-wider text-muted-foreground">
+          <button
+            type="button"
+            onClick={onLegal}
+            className="transition-colors hover:text-foreground"
+          >
+            PRIVACIDAD
+          </button>
+          <span className="text-border">·</span>
+          <button
+            type="button"
+            onClick={onLegal}
+            className="transition-colors hover:text-foreground"
+          >
+            TÉRMINOS
+          </button>
+        </div>
+      </footer>
     </div>
   )
 }

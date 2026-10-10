@@ -1,6 +1,8 @@
 import { RotateCcw, Home, X, Check } from 'lucide-react'
 import type { Board } from '@/lib/game'
 import { cn } from '@/lib/utils'
+import { AdSlot } from '@/components/ad-slot'
+import { showMedia } from '@/lib/ads'
 
 export function MultiplayerResultScreen({
   board,
@@ -88,7 +90,7 @@ export function MultiplayerResultScreen({
             >
               {cell.status === 'correct' && cell.playerAlias && (
                 <div className="flex flex-col items-center gap-0.5 px-1">
-                  {cell.avatarUrl ? (
+                  {cell.avatarUrl && showMedia ? (
                     <img
                       src={cell.avatarUrl}
                       alt={cell.playerAlias}
@@ -144,6 +146,8 @@ export function MultiplayerResultScreen({
       </div>
 
       <div className="flex-1" />
+
+      <AdSlot placement="result" className="mb-4 min-h-[100px]" />
 
       <div className="mt-8 flex flex-col gap-3">
         {isIncoming && pendingRequest?.type === 'play_again' && (

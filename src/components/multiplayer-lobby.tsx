@@ -3,6 +3,7 @@ import { Gamepad2, Link, Loader2, LogIn, Plus, Shield, Globe, Crosshair, Crown, 
 import { CATEGORY_KINDS, VCT_LEAGUES, kindLabel } from '@/lib/game'
 import type { GameConfig, CategoryKind } from '@/lib/game'
 import { cn } from '@/lib/utils'
+import { AdSlot } from '@/components/ad-slot'
 
 const kindIcons: Record<CategoryKind, typeof Shield> = {
   current_team: Shield,
@@ -330,6 +331,8 @@ export function MultiplayerLobby({
           </button>
         </div>
       )}
+
+      <AdSlot placement="lobby" className="mt-5 min-h-[100px]" />
     </div>
   )
 }

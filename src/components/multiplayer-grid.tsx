@@ -11,6 +11,7 @@ import { MultiplayerLobby } from '@/components/multiplayer-lobby'
 import { MultiplayerBoardScreen } from '@/components/multiplayer-board-screen'
 import { MultiplayerResultScreen } from '@/components/multiplayer-result-screen'
 import { PlayerSearch } from '@/components/player-search'
+import { AdSlot } from '@/components/ad-slot'
 
 export function MultiplayerGrid({ onBack }: { onBack: () => void }) {
   const [screen, setScreen] = useState<MultiplayerScreen>('lobby')
@@ -544,6 +545,8 @@ function WaitingScreen({
       <p className="mb-6 max-w-xs text-center font-sans text-sm text-muted-foreground">
         Comparte este código con otro jugador para que se una a la partida.
       </p>
+
+      <AdSlot placement="waiting" className="mb-6 min-h-[100px]" />
 
       <button
         type="button"

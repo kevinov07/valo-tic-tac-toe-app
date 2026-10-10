@@ -2,6 +2,7 @@ import { Shield, Globe, Crosshair, Crown, Users, Swords, Trophy } from 'lucide-r
 import type { Category, CategoryKind } from '@/lib/game'
 import { kindLabel } from '@/lib/game'
 import { cn } from '@/lib/utils'
+import { showMedia } from '@/lib/ads'
 
 const iconFor: Partial<Record<CategoryKind, typeof Shield>> = {
   current_team: Shield,
@@ -43,7 +44,7 @@ export function CategoryChip({
         active && 'bg-secondary',
       )}
     >
-      {category.image_url ? (
+      {category.image_url && showMedia ? (
         <>
           <div className="flex items-center gap-1.5">
             <Icon className="size-3 shrink-0 sm:size-4 md:size-5" strokeWidth={2.5} aria-hidden="true" />

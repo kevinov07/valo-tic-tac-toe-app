@@ -1,6 +1,7 @@
 import { Plus, X } from 'lucide-react'
 import type { BoardCell } from '@/lib/game'
 import { cn } from '@/lib/utils'
+import { showMedia } from '@/lib/ads'
 
 export function GridCell({
   cell,
@@ -82,7 +83,7 @@ export function GridCell({
 
       {isCorrect && cell.playerAlias && (
         <div className="animate-stamp-in absolute inset-0 z-10 flex flex-col items-center justify-center gap-0.5 px-1 sm:gap-1.5 sm:px-2">
-          {cell.avatarUrl && (
+          {cell.avatarUrl && showMedia && (
             <img
               src={cell.avatarUrl}
               alt={cell.playerAlias}
