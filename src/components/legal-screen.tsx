@@ -58,8 +58,8 @@ function Privacy() {
           Este es un proyecto fan sin registro de usuarios. No recopilamos
           nombres, correos ni datos de cuenta. El servidor puede almacenar
           temporalmente datos técnicos (IP, agente de usuario) en sus registros
-          para seguridad y diagnóstico; no los vendemos ni los compartimos con
-          terceros.
+          para seguridad y diagnóstico. No vendemos estos datos; se comparten
+          con terceros solo en la medida necesaria para servir los anuncios.
         </p>
       </Section>
 
@@ -89,8 +89,13 @@ function Privacy() {
 
       <Section title="Contacto">
         <p>
-          Si tienes preguntas sobre privacidad, escríbenos a
-          contacto@valo-tic-tac-toe.app.
+          Este proyecto no dispone de un correo de contacto dedicado. Si tienes
+          preguntas sobre privacidad o quieres ejercer tus derechos, abre un
+          aviso en{' '}
+          <ExternalLink href="https://github.com/kevinov07/valo-tic-tac-toe-app">
+            el repositorio del proyecto
+          </ExternalLink>
+          .
         </p>
       </Section>
     </div>
@@ -102,10 +107,12 @@ function Terms() {
     <div className="flex flex-col gap-4 font-sans text-sm leading-relaxed text-foreground">
       <Section title="Proyecto fan independiente">
         <p>
-          VALO TIC TAC TOE es un proyecto fan sin ánimo de lucro, creado por
-          fans y sin afiliación, patrocinio ni respaldo de Riot Games. No
-          reclamamos derechos sobre los nombres, marcas, personajes ni
-          estadísticas de Valorant, que pertenecen a sus respectivos dueños.
+          VALO TIC TAC TOE es un proyecto fan independiente, creado por fans y
+          sin afiliación, patrocinio ni respaldo de Riot Games. El sitio
+          muestra publicidad para cubrir los costes de hosting y mantenimiento;
+          el acceso al juego sigue siendo gratuito. No reclamamos derechos
+          sobre los nombres, marcas, personajes ni estadísticas de Valorant,
+          que pertenecen a sus respectivos dueños.
         </p>
       </Section>
 
@@ -137,7 +144,11 @@ function Terms() {
       <Section title="Contacto">
         <p>
           Para usos legítimos de marcas, retirada de contenido u otras
-          consultas, escribe a contacto@valo-tic-tac-toe.app.
+          consultas, abre un aviso en{' '}
+          <ExternalLink href="https://github.com/kevinov07/valo-tic-tac-toe-app">
+            el repositorio del proyecto
+          </ExternalLink>
+          .
         </p>
       </Section>
     </div>
