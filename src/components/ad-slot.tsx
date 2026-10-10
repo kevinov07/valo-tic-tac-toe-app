@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import {
-  ADSENSE_SCRIPT_SRC,
   adClient,
   adsEnabled,
   getAdSlot,
+  getAdsenseScriptSrc,
   type AdPlacement,
 } from '@/lib/ads'
 
@@ -14,11 +14,11 @@ declare global {
   }
 }
 
-function ensureAdsenseScript() {
-  if (document.querySelector(`script[src="${ADSENSE_SCRIPT_SRC}"]`)) return
+export function ensureAdsenseScript() {
+  if (document.querySelector(`script[src^="${getAdsenseScriptSrc()}"]`)) return
   const script = document.createElement('script')
   script.async = true
-  script.src = ADSENSE_SCRIPT_SRC
+  script.src = getAdsenseScriptSrc()
   script.crossOrigin = 'anonymous'
   document.head.appendChild(script)
 }
@@ -36,8 +36,6 @@ export function AdSlot({
 
   useEffect(() => {
     if (!active) return
-
-    ensureAdsenseScript()
 
     try {
       window.adsbygoogle = window.adsbygoogle || []

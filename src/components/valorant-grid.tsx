@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Board, PlayerSummary } from '@/lib/game'
 import {
   TOTAL_GUESSES,
@@ -14,11 +14,19 @@ import { PlayerSearch } from '@/components/player-search'
 import { MultiplayerGrid } from '@/components/multiplayer-grid'
 import { LegalScreen } from '@/components/legal-screen'
 import { ConsentBanner } from '@/components/consent-banner'
+import { ensureAdsenseScript } from '@/components/ad-slot'
+import { adClient, adsEnabled } from '@/lib/ads'
 
 type Screen = 'home' | 'board' | 'result' | 'multiplayer' | 'legal'
 
+function initialScreen(): Screen {
+  const hash = window.location.hash.replace('#', '')
+  if (hash === 'legal' || hash === 'privacy' || hash === 'terms') return 'legal'
+  return 'home'
+}
+
 export function ValorantGrid() {
-  const [screen, setScreen] = useState<Screen>('home')
+  const [screen, setScreen] = useState<Screen>(initialScreen)
   const [board, setBoard] = useState<Board | null>(null)
   const [guessesLeft, setGuessesLeft] = useState(TOTAL_GUESSES)
   const [activeCell, setActiveCell] = useState<number | null>(null)
@@ -32,6 +40,10 @@ export function ValorantGrid() {
     () => board?.cells.filter((c) => c.status === 'correct').length ?? 0,
     [board],
   )
+
+  useEffect(() => {
+    if (adsEnabled && adClient) ensureAdsenseScript()
+  }, [])
 
   const startGame = useCallback(async () => {
     setLoading(true)

@@ -4,8 +4,14 @@ export const adsEnabled = import.meta.env.VITE_AD_ENABLED === 'true'
 
 export const adClient = import.meta.env.VITE_AD_CLIENT ?? ''
 
-export const ADSENSE_SCRIPT_SRC =
+const ADSENSE_BASE =
   'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+
+export function getAdsenseScriptSrc(): string {
+  // Con ?client= activas los "auto ads"; las unidades manuales usan el mismo
+  // loader añadiendo data-ad-client/data-ad-slot en cada <ins>.
+  return adClient ? `${ADSENSE_BASE}?client=${adClient}` : ADSENSE_BASE
+}
 
 const SLOT_IDS: Record<string, string | undefined> = {
   home: import.meta.env.VITE_AD_SLOT_HOME,
